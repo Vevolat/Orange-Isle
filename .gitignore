@@ -58,6 +58,7 @@ lerna-debug.log*
 *
 !.gitignore
 !index.html
+!README.md
 # 包含mx2文件夹中的所有文件
 !mx2/
 !mx2/**/*
