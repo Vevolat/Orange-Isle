@@ -36,13 +36,44 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: #f0f0f0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             transition: opacity 0.8s ease-out, visibility 0.8s;
+            overflow: hidden;
+        }
+        
+        /* 添加背景装饰 */
+        #loading-container::before,
+        #loading-container::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        #loading-container::before {
+            width: 50vw;
+            height: 50vw;
+            top: -25vw;
+            left: -25vw;
+        }
+        
+        #loading-container::after {
+            width: 40vw;
+            height: 40vw;
+            bottom: -20vw;
+            right: -20vw;
+            animation-delay: 2s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.1); opacity: 0.2; }
         }
         
         #loading-container.hidden {
@@ -50,21 +81,42 @@
             visibility: hidden;
         }
         
+        /* 改进的加载图标 */
         .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid #ccc;
-            border-top: 4px solid #4CAF50;
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid white;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 加载图标内部装饰 */
+        .loading-spinner::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite reverse;
         }
         
         .loading-text {
-            color: #333;
-            font-family: Arial, sans-serif;
-            font-size: 18px;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            font-size: 20px;
+            font-weight: 500;
             text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
         }
         
         @keyframes spin {
@@ -90,7 +142,7 @@
         .zoom-controls {
             position: fixed;
             right: 20px;
-            bottom: 60px; /* 向上移动了一些距离 */
+            bottom: 60px;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -98,23 +150,26 @@
         }
         
         .zoom-btn {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(0, 0, 0, 0.8); /* 黑色背景 */
+            width: 48px;
+            height: 48px;
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 50%;
             font-size: 24px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         
         .zoom-btn:hover {
             background-color: rgba(0, 0, 0, 1);
             transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         }
         
         .zoom-btn:active {
@@ -134,67 +189,59 @@
             z-index: 1000;
             opacity: 1;
             transition: opacity 0.5s ease;
-        }
-        
-        .loading-tip.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .zoom-btn:hover {
-            background-color: rgba(255, 255, 255, 0.25);
-            transform: scale(1.05);
-        }
-        
-        .zoom-btn:active {
-            transform: scale(0.95);
+            backdrop-filter: blur(10px);
         }
         
         /* 进度条样式 */
         .progress-container {
             width: 80%;
             max-width: 600px;
-            height: 20px;
-            background-color: #ddd;
-            border-radius: 10px;
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             margin: 15px 0;
             overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(5px);
         }
         
         .progress-bar {
             height: 100%;
-            background-color: #4CAF50;
+            background: linear-gradient(90deg, #4CAF50 0%, #45a049 100%);
             width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 10px;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 进度条动画效果 */
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: skewX(-20deg);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 200%; }
         }
         
         /* 加载详情信息 */
         .loading-details {
-            color: #555;
+            color: white;
             font-family: Arial, sans-serif;
             font-size: 14px;
             text-align: center;
             margin-top: 10px;
             max-width: 80%;
-        }
-        
-        /* 加载日志区域 */
-        .loading-logs {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            right: 10px;
-            height: 150px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-family: monospace;
-            font-size: 12px;
-            overflow-y: auto;
-            z-index: 997;
-            display: none;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
         
         /* 显示日志按钮 */
@@ -206,14 +253,17 @@
             color: white;
             border: none;
             padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
             z-index: 998;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
         
         #show-logs-btn:hover {
             background-color: rgba(76, 175, 80, 1);
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -1269,32 +1319,72 @@
             const zoomOutBtn = document.getElementById('zoom-out-btn');
             
             if (zoomInBtn && zoomOutBtn && controls) {
+                // 缩放动画状态
+                let isAnimating = false;
+                
+                // 缓动函数 - 实现非线性动画效果
+                function easeOutQuad(t) {
+                    return t * (2 - t);
+                }
+                
+                // 缩放动画函数
+                function animateZoom(targetDistance, duration = 500) {
+                    if (isAnimating) return;
+                    
+                    isAnimating = true;
+                    const startDistance = camera.position.distanceTo(controls.target);
+                    const startTime = performance.now();
+                    
+                    function updateZoom(currentTime) {
+                        const elapsedTime = currentTime - startTime;
+                        const progress = Math.min(elapsedTime / duration, 1);
+                        const easedProgress = easeOutQuad(progress);
+                        
+                        // 计算当前应该的距离
+                        const currentDistance = startDistance + (targetDistance - startDistance) * easedProgress;
+                        
+                        // 计算新的相机位置（沿相机指向目标的方向移动）
+                        const direction = new THREE.Vector3();
+                        camera.getWorldDirection(direction);
+                        direction.normalize();
+                        
+                        // 计算目标位置
+                        const targetPosition = new THREE.Vector3();
+                        targetPosition.copy(controls.target);
+                        targetPosition.add(direction.multiplyScalar(-currentDistance));
+                        
+                        // 设置相机位置
+                        camera.position.copy(targetPosition);
+                        
+                        // 更新相机的近平面和远平面
+                        camera.updateProjectionMatrix();
+                        
+                        // 继续动画
+                        if (progress < 1) {
+                            requestAnimationFrame(updateZoom);
+                        } else {
+                            isAnimating = false;
+                        }
+                    }
+                    
+                    // 开始动画
+                    requestAnimationFrame(updateZoom);
+                }
+                
                 // 放大按钮事件
                 zoomInBtn.addEventListener('click', () => {
-                    const zoomFactor = 1.2; // 放大因子
-                    const newTargetDistance = camera.position.distanceTo(controls.target) / zoomFactor;
-                    
-                    // 计算新的相机位置（沿相机指向目标的方向移动）
-                    const direction = new THREE.Vector3();
-                    camera.getWorldDirection(direction);
-                    camera.position.add(direction.clone().multiplyScalar(-camera.position.distanceTo(controls.target) + newTargetDistance));
-                    
-                    // 更新相机的近平面和远平面
-                    camera.updateProjectionMatrix();
+                    const zoomFactor = 1.5; // 放大因子
+                    const currentDistance = camera.position.distanceTo(controls.target);
+                    const newTargetDistance = Math.max(controls.minDistance, currentDistance / zoomFactor);
+                    animateZoom(newTargetDistance);
                 });
                 
                 // 缩小按钮事件
                 zoomOutBtn.addEventListener('click', () => {
-                    const zoomFactor = 1.2; // 缩小因子
-                    const newTargetDistance = camera.position.distanceTo(controls.target) * zoomFactor;
-                    
-                    // 计算新的相机位置（沿相机指向目标的反方向移动）
-                    const direction = new THREE.Vector3();
-                    camera.getWorldDirection(direction);
-                    camera.position.add(direction.clone().multiplyScalar(-camera.position.distanceTo(controls.target) + newTargetDistance));
-                    
-                    // 更新相机的近平面和远平面
-                    camera.updateProjectionMatrix();
+                    const zoomFactor = 1.5; // 缩小因子
+                    const currentDistance = camera.position.distanceTo(controls.target);
+                    const newTargetDistance = Math.min(controls.maxDistance, currentDistance * zoomFactor);
+                    animateZoom(newTargetDistance);
                 });
             }
         }
